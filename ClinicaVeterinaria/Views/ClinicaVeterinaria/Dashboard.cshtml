@@ -1,0 +1,223 @@
+﻿@model IEnumerable<ClinicaVeterinaria.Models.Paziente>
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+@if (TempData["Errore"] != null)
+{
+    <div class="alert alert-danger">
+        <p>@TempData["Errore"]</p>
+    </div>
+}
+
+<div class="row">
+    <div class="col-10 py-3">
+        <div class="d-flex flex-row">
+            <h3>
+                Dashboard
+            </h3>
+            <a href="/ClinicaVeterinaria/CreatePaziente" class="btn ColoreBtn ms-5"><i class="fa-solid fa-add"></i> Aggiungi Paziente</a>
+        </div>
+        <table class="table my-2">
+            <tr class="IntestazioneTabella">
+                <th>
+                    @Html.DisplayNameFor(model => model.IdPaziente)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataRegistrazione)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ColoreMantello)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataNascita)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Microchip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NChip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NomeProprietario)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tipologia.NomeTipologia)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FotoPaziente)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr class="Righe">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdPaziente)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @item.DataRegistrazione.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ColoreMantello)
+                    </td>
+                    <td>
+                        @item.DataNascita.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Microchip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NChip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CognomeProprietario)
+                        @Html.DisplayFor(modelItem => item.NomeProprietario)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tipologia.NomeTipologia)
+                    </td>
+                    <td>
+                        <img class="img-thumbnail" style="width: 64px; height: 64px" src="~/Content/img/@item.FotoPaziente" />
+                    </td>
+                    <td>
+                        <a href="/ClinicaVeterinaria/EditPaziente/@item.IdPaziente" class="btn ColoreBtn my-1"><i class="fa-solid fa-edit"></i></a>
+                        <a href="/ClinicaVeterinaria/DettagliPaziente/@item.IdPaziente" class="btn ColoreBtn"><i class="fa-solid fa-circle-info"></i></a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+    <div class="col-2 card shadow p-3">
+        <div class="d-flex flex-row">
+            <h5>
+                Tipologie
+            </h5>
+            <button type="button" class="btn ColoreBtn MostraFinestraTipologie ms-auto"><i class="fa-solid fa-add"></i></button>
+        </div>
+
+
+        <table class="table my-2">
+            <tr class="IntestazioneTabella">
+                <th>
+                    Id
+                </th>
+                <th>
+                    Nome
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (ClinicaVeterinaria.Models.Tipologia item in ViewBag.ListaTipologie)
+            {
+                <tr class="Righe">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdTipologia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NomeTipologia)
+                    </td>
+                    <td>
+                        <button type="button" id="@item.IdTipologia" class="btn btn-danger MostraDeleteTipologie"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+@*MODALE FINESTRA AGGIUNTA TIPOLOGIE*@
+<div class="card Sfondo Modale" id="ModaleTipologie" style="display: none">
+
+    <div class="d-flex"><h3 class="ms-auto">Aggiungi tipologie</h3><button type="button" class="ms-auto btn btn-danger MostraFinestraTipologie"><i class="fa-solid fa-square-xmark"></i></button></div>
+    <center>
+        <div class="form-horizontal my-3">
+            <div class="form-group">
+                <p>Nome tipologia</p>
+                <div class="col-md-10">
+                    <input type="text" id="NomeTipologia" class="form-control" />
+                </div>
+            </div>
+            <button type="button" class="btn ColoreBtn mt-3" id="AggiungiTipologia">Aggiungi</button>
+        </div>
+    </center>
+</div>
+
+@*MODALE FINESTRA DELETE TIPOLOGIE*@
+<div class="card Sfondo Modale" id="ModaleDelete" style="display: none">
+    <div class="alert alert-danger" id="alert-tipologie" style="display: none"><p>Non puoi eliminare una tipologia con animali assegnati</p></div>
+    <div class="d-flex"><h3 class="ms-auto text-white"><i class="fa-solid fa-skull"></i> Elimina tipologia</h3><button type="button" class="ms-auto btn btn-danger MostraDeleteTipologie"><i class="fa-solid fa-square-xmark"></i></button></div>
+    <center>
+        <div class="form-horizontal my-3">
+            <div class="form-group">
+                <h3>Sei sicuro di voler eliminare la tipologia ?</h3>
+            </div>
+            <button type="button" class="btn btn-danger mt-3" id="DeleteTipologie">Elimina</button>
+        </div>
+    </center>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+            $('.MostraFinestraTipologie').click(function () {
+                $('#ModaleTipologie').slideToggle();
+                $('#ModaleDelete').slideUp(10);
+            })
+
+            $('#AggiungiTipologia').click(function () {
+                var nomeTipologia = $('#NomeTipologia').val();
+
+                $.ajax({
+                    url: 'CreateTipologie',
+                    type: 'GET',
+                    data: { 'NomeTipologia': nomeTipologia },
+                    success: function (tipologia) {
+                        console.log(tipologia);
+                    },
+                    complete: function () {
+                        location.reload()
+                    }
+                })
+            })
+
+            var idTipologia;
+            $('.MostraDeleteTipologie').click(function () {
+                $('#ModaleDelete').slideToggle();
+                $('#ModaleTipologie').slideUp(10);
+                idTipologia = $(this).attr('id');
+            })
+
+            $('#DeleteTipologie').click(function () {
+                $.ajax({
+                    url: 'DeleteTipologia',
+                    type: 'GET',
+                    data: { 'IdTipologia': idTipologia },
+                    success: function (item) {
+                        if (item == "ko") {
+                            $('#alert-tipologie').slideDown();
+                        }
+                        else {
+                            location.reload();
+                        }
+                    },
+                })
+            })
+        })
+    </script>
+}
+
+

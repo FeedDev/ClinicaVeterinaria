@@ -1,0 +1,70 @@
+﻿@model ClinicaVeterinaria.Models.Visita
+
+@{
+    ViewBag.Title = "DeleteVisita";
+}
+
+
+
+<center>
+
+    <h4><a class="btn ColoreBtn" href="/ClinicaVeterinaria/DettagliPaziente/@Request.QueryString["idPaziente"]"><i class="fa-solid fa-hand-point-left"></i></a> Sei sicuro di voler eliminare la visita di @Model.Paziente.Nome?</h4>
+    <div>
+        <hr />
+        <table class="table w-50">
+            <tr class="IntestazioneTabella">
+                <th>
+                    @Html.DisplayNameFor(model => model.IdVisita)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataVisita)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Esame)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DescrizioneVisita)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Paziente.Nome)
+                </th>
+            </tr>
+
+            <tr class="Righe">
+                <td>
+                    @Html.DisplayFor(model => model.IdVisita)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.DataVisita)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Esame)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.DescrizioneVisita)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Paziente.Nome)
+                </td>
+
+            </tr>
+
+
+        </table>
+
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Elimina" class="btn btn-danger" />
+                
+            </div>
+        }
+    </div>
+</center>

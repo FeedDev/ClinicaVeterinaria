@@ -1,0 +1,200 @@
+﻿@model ClinicaVeterinaria.Models.Paziente
+
+@{
+    ViewBag.Title = "RicercaAnimali";
+}
+
+@if (ViewBag.RicercaAnimali != null)
+{
+    <div class=" container alert alert-danger">
+        <p>@ViewBag.RicercaAnimali</p>
+    </div>
+}
+
+@if (ViewBag.Errore != null)
+{
+    <div class=" container alert alert-danger">
+        <p>@ViewBag.Errore</p>
+    </div>
+}
+
+
+
+
+
+<div class=" row">
+    <div id="Errore" class=" container alert alert-danger" style="display:none">
+        <p>Numero Chip non trovato</p>
+    </div>
+    <div class="col-md-3">
+        <img src="https://purepng.com/public/uploads/large/purepng.com-dog-pngdogdoggycutehoundblack-snoutgerman-shepperdlooking-to-camera-451520332369fzowk.png" style="width: 400px" />
+    </div>
+
+    <div class="col-md-9">
+
+        <center>
+            <div class="card Sfondo shadow my-5" style="width: 25rem;">
+                <div class="card-body">
+                    <h2 class="text-center justify-content-center d-flex">Ricerca il tuo animale</h2>
+
+                    <p class="mt-2 ">Numero Microchip</p>
+                    <input class="form-control mx-2" type="text" id="NChip" name="NChip" placeholder="Inserisci numero Microchip">
+
+
+                    <input id="ButtonNchip" class="btn ColoreBtn justify-content-center d-flex m-4" type="button" value="Cerca">
+
+                </div>
+            </div>
+        </center>
+
+    </div>
+</div>
+
+<div id="Tabelle" class="row" style="display:none">
+    <div id="FotoAnimale" class="col-md-3">
+
+
+    </div>
+    <div class="col-md-9">
+
+        
+        <table class="table my-2">
+            <tr class="IntestazioneTabella">
+                @*<th>
+                        @Html.DisplayNameFor(model => model.IdPaziente)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataRegistrazione)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ColoreMantello)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataNascita)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Microchip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NChip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NomeProprietario)
+                </th>
+            </tr>
+
+            <tr>
+                @*<td id="IdPaziente">
+                        @Html.DisplayFor(model => model.IdPaziente)
+                    </td>*@
+                <td id="NomeAnimale">
+                </td>
+                <td id="DataRegistrazione">
+                </td>
+                <td id="ColoreMantello">
+                </td>
+                <td id="DataNascita">
+                </td>
+                <td id="Microchip">
+                </td>
+                <td id="OutputNChip">
+                </td>
+                <td id="NomeProprietario">
+                </td>
+            </tr>
+        </table>
+
+        <div class="my-4">
+            <h4>Visite</h4>
+            
+            <table id="TableVisite" class="table">
+                
+                
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        
+        $(document).ready(function () {
+
+            $('#ButtonNchip').click(function () {
+
+                $('#Tabelle').slideUp(10);
+                
+                /*$('#DettagliPaziente').empty();*/
+                $('#FotoAnimale').empty();
+
+                $('#NomeAnimale').empty();
+                $('#DataRegistrazione').empty();
+                $('#ColoreMantello').empty();
+                $('#DataNascita').empty();
+                $('#Microchip').empty();
+                $('#OutputNChip').empty();
+                $('#NomeProprietario').empty();
+                $('#TableVisite').empty();
+
+                var Nchip = $('#NChip').val();
+
+                $.ajax({
+                    url: 'RicercaForChip',
+                    type: 'GET',
+                    data: { 'NChip' : Nchip},
+                    success: function (animale) {
+                        if (animale != "ko") {
+                            $("#Errore").slideUp();
+                            var registrazione = animale.DataRegistrazioneString;
+                            var nascita = animale.DataNascitaString;
+                            var nchip = animale.NChip;
+
+                            $('#FotoAnimale').append('<img src= "/Content/img/' + animale.FotoPaziente + '" class="img-thumbnail"/>')
+
+                            $('#NomeAnimale').append(animale.Nome)
+                            $('#DataRegistrazione').append(registrazione)
+                            $('#ColoreMantello').append(animale.ColoreMantello)
+                            $('#DataNascita').append(nascita)
+                            if (animale.Microchip) {
+
+                                $('#Microchip').append('<input checked="checked" class="check-box" disabled="disabled" type="checkbox">')
+                            }
+                            else {
+                                $('#Microchip').append('<input class="check-box" disabled="disabled" type="checkbox">')
+                            }
+                            $('#OutputNChip').append(nchip)
+                            $('#NomeProprietario').append(animale.NomeProprietario + ' ' + animale.CognomeProprietario)
+                            $('#TableVisite').append('<tr class="IntestazioneTabella"><th> Esame </th><th> Descrizione Visita </th><th> Data Visita </th><th> Medico </th></tr>')
+
+                            $.each(animale.listaVisite, function (index, visita) {
+                                $('#TableVisite').append('<tr class="Righe"><td>' + visita.Esame + '</td><td>' + visita.DescrizioneVisita + '</td><td>' + visita.DataVisitaString + '</td><td>' + visita.Medico.Username + '</td></tr>')
+
+                            })
+                        $('#Tabelle').slideDown()
+                        }
+                        else
+                        {
+                            $('#Errore').slideDown();
+                        }
+                        },
+                    
+                    
+                })
+                
+            })
+
+        })
+
+    </script>
+}
+
+
+
+

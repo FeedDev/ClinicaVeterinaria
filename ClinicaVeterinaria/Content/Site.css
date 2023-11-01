@@ -1,0 +1,113 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.image-change:hover{
+    cursor: pointer;
+}
+
+.img-thumbnail {
+    width: 200px;
+    height: 200px;
+    border: none;
+    border-radius: 16px;
+    padding: 0;
+}
+
+.ricovero-card {
+    text-decoration: none;
+    color: black;
+    border-radius: 16px;
+}
+
+    .ricovero-card:hover {
+        color: black;
+        box-shadow: 15px 10px 20px #aaaaaa;
+    }
+
+
+.ColoreBtn {
+    background-color: #72CC50;
+    color: white;
+    
+}
+    .ColoreBtn:hover {
+        background-color: #BFD834;
+        color: white;
+    }
+
+.Sfondo {
+    background-color: #019875;
+    color: white;
+}
+
+.IntestazioneTabella {
+    background-color: #019875;
+    color: white;
+    
+}
+
+.IntestazioneTabella:hover {
+    background-color: #019875;
+    color: white;
+}
+
+.Righe:hover {
+    background-color: #e8e8e8;
+}
+
+.card-ricoveri:not(:hover){
+    filter: brightness(80%);
+}
+
+.card-ricoveri:hover {
+    filter: brightness(100%);
+}
+
+.Modale {
+    position: fixed;
+    height: auto;
+    padding: 20px 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.Tooltip{
+    display: none;
+}
+
+
+/*.ShowTooltip:not(hover) > .Tooltip {
+    display: none;
+}*/
+
+.ShowTooltip:hover > .Tooltip {
+    display: block;
+    position: absolute;
+    background-color: #BFD834;
+    border-radius: 16px;
+    border: 1px solid black;
+    color: black;
+    padding: 5px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+

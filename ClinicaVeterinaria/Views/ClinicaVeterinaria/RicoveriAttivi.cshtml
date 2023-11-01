@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ClinicaVeterinaria.Models.Tipologia>
+@{
+    ViewBag.Title = "RicoveriAttivi";
+    List<ClinicaVeterinaria.Models.Tipologia> listaTipologie = new List<ClinicaVeterinaria.Models.Tipologia>();
+}
+
+<h2>Ricoveri</h2>
+
+<center>
+    <div class="row">
+        <div class="card shadow col-md-2">
+            <div class="card-body d-flex flex-column">
+
+                @foreach (ClinicaVeterinaria.Models.Tipologia t in Model)
+                {
+                    <label class="my-3 ">@t.NomeTipologia <input class="text-input m-1 mx-2 tipologiaCheck" type="checkbox" id="@t.NomeTipologia"></label>
+
+                    listaTipologie.Add(t);
+                }
+                <div class=" flex-column justify-content-center">
+                    <input id="GetRicoveri" class=" btn ColoreBtn justify-content-center d-flex m-2 px-5" type="button" value="Cerca">
+                </div>
+            </div>
+        </div>
+
+        <div id="ContenitoreRicoveri" class="d-flex flex-wrap my-3 col-md-10">
+
+        </div>
+    </div>
+    
+</center>
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        var Tipologie = @Html.Raw(Json.Encode(listaTipologie));
+        $(document).ready(function () {
+
+            $('#GetRicoveri').click(function () {
+                var tipologie = [];
+                $('#ContenitoreRicoveri').empty();
+
+                $.each(Tipologie, function (index, item) {
+                    var checked = $('#' + item.NomeTipologia).is(':checked');
+
+                    if (checked == true) {
+                        tipologie.push($('#' + item.NomeTipologia).attr('id'));
+                    }
+                })
+                console.log(tipologie);
+
+                $.ajax({
+                    url: 'FiltroRicoveriAttivi',
+                    type: 'POST',
+                    data: { 'tipologie' : tipologie},
+                    success: function (listRicovero) {
+                        $.each(listRicovero, function (index, Ricovero) {
+                            $('#ContenitoreRicoveri').append('<a href="/ClinicaVeterinaria/DettagliPaziente/' + Ricovero.Paziente.IdPaziente + '"class="ricovero-card m-3 col-md-3"> ' +
+                                ' <div class="card Sfondo card-ricoveri">' + '<div class= "card-body">' + '<img src="/Content/img/' + Ricovero.Paziente.FotoPaziente + '" class="img-thumbnail my-2"/> ' +
+                                ' <p><b>Nome: </b>' + Ricovero.Paziente.Nome + '</p>' +
+                                ' <p><b>Tipologia: </b>' + Ricovero.Paziente.Tipologia.NomeTipologia + '</p>' +
+                                '<p> <b>Ricoverato: </b>' + Ricovero.DataRicoveroString + '</p> </div> </div> </a>')
+                        })
+                    }
+                })
+            })
+
+        })
+
+    </script>
+}
+

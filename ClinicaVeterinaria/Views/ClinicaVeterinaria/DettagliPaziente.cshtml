@@ -1,0 +1,150 @@
+﻿@model ClinicaVeterinaria.Models.Paziente
+
+@{
+    ViewBag.Title = "DettagliPaziente";
+}
+
+<h2>
+    @if (User.Identity.IsAuthenticated)
+    {<a class="btn ColoreBtn" href="/ClinicaVeterinaria/Dashboard"><i class="fa-solid fa-hand-point-left"></i></a>}
+    else {
+    <a class="btn ColoreBtn" href="/ClinicaVeterinaria/RicoveriAttivi"><i class="fa-solid fa-hand-point-left"></i></a>
+    } Dettagli di @Model.Nome
+</h2>
+
+<div class="row">
+    <div class="col-md-3 my-5">
+        <center>
+            <img src="~/Content/img/@Model.FotoPaziente" class="img-thumbnail" />
+
+        </center>
+    </div>
+
+    <div class="col-md-9">
+        <div>
+            <hr />
+            <table class="table my-2">
+                <tr class="IntestazioneTabella">
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdPaziente)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataRegistrazione)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ColoreMantello)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataNascita)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Microchip)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NChip)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NomeProprietario)
+                    </th>
+                </tr>
+
+                <tr class="Righe">
+                    <td>
+                        @Html.DisplayFor(model => model.IdPaziente)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Nome)
+                    </td>
+                    <td>
+                        @Model.DataRegistrazione.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.ColoreMantello)
+                    </td>
+                    <td>
+                        @Model.DataNascita.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Microchip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.NChip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.NomeProprietario)
+                        @Html.DisplayFor(model => model.CognomeProprietario)
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="my-4">
+            <h4>
+                Visite @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="/ClinicaVeterinaria/CreateVisita/?idPaziente=@Model.IdPaziente" class="btn ColoreBtn"><i class="fa-solid fa-add"></i> Aggiungi visita</a>
+                }
+            </h4>
+            
+            <hr />
+            <table class="table">
+                <tr class="IntestazioneTabella">
+                    <th>
+                        IdVisita
+                    </th>
+                    <th>
+                        Esame
+                    </th>
+                    <th>
+                        Descrizione
+                    </th>
+                    <th>
+                        Data Visita
+                    </th>
+                    <th>
+                        Medico
+                    </th>
+                    <th></th>
+                </tr>
+                @for (int i = Model.listaVisite.Count - 1; i >= 0; i--)
+                {
+                    <tr class="Righe">
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.listaVisite[i].IdVisita)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.listaVisite[i].Esame)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.listaVisite[i].DescrizioneVisita)
+                        </td>
+                        <td>
+                            @Model.listaVisite[i].DataVisita.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.listaVisite[i].Medico.Username)
+                        </td>
+                        <td>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a href="/ClinicaVeterinaria/DeleteVisita/@Model.listaVisite[i].IdVisita?IdPaziente=@Model.IdPaziente" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>
+
+    
+</div>
+
+
+
+
+

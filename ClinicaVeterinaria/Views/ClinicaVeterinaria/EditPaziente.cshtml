@@ -1,0 +1,76 @@
+﻿@model ClinicaVeterinaria.Models.Paziente
+
+@{
+    ViewBag.Title = "EditPaziente";
+}
+
+
+
+@if (ViewBag.Errore != null)
+{
+    <div class="alert alert-danger">
+        <p>@ViewBag.Errore</p>
+    </div>
+}
+
+<center>
+    <div class="card shadow Sfondo" style="width: 25rem;">
+        <div class="card-body">
+            <h2><a class="btn ColoreBtn" href="/ClinicaVeterinaria/Dashboard"><i class="fa-solid fa-hand-point-left"></i></a> Modifica Animale</h2>
+            @using (Html.BeginForm("EditPaziente", "ClinicaVeterinaria", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.IdPaziente)
+                    @Html.HiddenFor(model => model.FotoPaziente)
+                    @Html.HiddenFor(model => model.DataRegistrazione)
+                    @Html.HiddenFor(model => model.DataNascita)
+                    @Html.HiddenFor(model => model.ColoreMantello)
+                    @Html.HiddenFor(model => model.Tipologia.IdTipologia)
+                    @Html.HiddenFor(model => model.Microchip)
+                    @Html.HiddenFor(model => model.NChip)
+
+                    <label>
+                        <input accept="image/*" id="Photo" name="Photo" type="file" value="" style="display:none">
+                        <img src="~/Content/img/@Model.FotoPaziente" class="img-thumbnail" style="width: 100px; height: 100px" />
+                    </label>
+
+
+                    <div class="form-group my-2">
+                        @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-10" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group my-2">
+                        @Html.LabelFor(model => model.NomeProprietario, htmlAttributes: new { @class = "control-label col-md-10" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.NomeProprietario, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NomeProprietario, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group my-2">
+                        @Html.LabelFor(model => model.CognomeProprietario, htmlAttributes: new { @class = "control-label col-md-10" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.CognomeProprietario, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CognomeProprietario, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Salva" class="btn ColoreBtn px-3" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</center>
+            

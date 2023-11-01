@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Applicazione ASP.NET</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark Sfondo" style="padding: 5px 0px">
+        <div class="container">
+            
+            <a href = "/ClinicaVeterinaria/Index" class="navbar-brand"><h2><i class="fa-solid fa-shield-dog"></i> Animal House</h2></a>
+                  
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Attiva/Disattiva spostamento" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <ul class="navbar-nav flex-grow-1">
+                        <li><a href="/ClinicaVeterinaria/Index" class = "nav-link"><h6>Home</h6> </a></li>
+                        <li><a href="/ClinicaVeterinaria/Dashboard" class = "nav-link"><h6>Dashboard</h6> </a></li>
+                        <li><a href="/ClinicaVeterinaria/RicoveriAttivi" class = "nav-link"><h6>Ricoveri Attivi</h6> </a></li>
+                        <li><a href="/ClinicaVeterinaria/RicercaAnimali" class = "nav-link"><h6>Ricerca Animali</h6> </a></li>
+                        <li class="ms-auto"><a href="/ClinicaVeterinaria/SignOut" class = "btn btn-danger"><h6>Logout</h6> </a></li>
+
+                        @*<li class="ms-auto">@Html.ActionLink("Logout", "SignOut", "ClinicaVeterinaria", new { area = "" }, new { @class = "nav-link" })</li>*@
+                    </ul>
+                }
+                else
+                {
+                    <ul class="navbar-nav flex-grow-1">
+                        
+                        <li><a href="/ClinicaVeterinaria/Index" class = "nav-link"><h6>Home</h6> </a></li>
+                        
+                        <li><a href="/ClinicaVeterinaria/RicoveriAttivi" class = "nav-link"><h6>Ricoveri Attivi</h6> </a></li>
+                        <li><a href="/ClinicaVeterinaria/RicercaAnimali" class = "nav-link"><h6>Ricerca Animali</h6> </a></li>
+                        <li class="ms-auto"><a href="/ClinicaVeterinaria/Login" class = "btn ColoreBtn"><h6>Login</h6> </a></li>
+
+                        @*<li class="ms-auto">@Html.ActionLink("Logout", "SignOut", "ClinicaVeterinaria", new { area = "" }, new { @class = "nav-link" })</li>*@
+                    </ul>
+                    
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <center><p>&copy; @DateTime.Now.Year - Animal House </p></center>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

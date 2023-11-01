@@ -1,0 +1,105 @@
+﻿@model ClinicaVeterinaria.Models.Paziente
+
+@{
+    ViewBag.Title = "CreatePaziente";
+}
+
+
+<center>
+    <div class="card shadow Sfondo" style="width: 25rem;">
+        <div class="card-body">
+            <h2><a class="btn ColoreBtn" href="/ClinicaVeterinaria/Dashboard"><i class="fa-solid fa-hand-point-left"></i></a> Crea Paziente</h2>
+            @using (Html.BeginForm("CreatePaziente", "ClinicaVeterinaria", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group my-2">
+                @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-10" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group my-2">
+                @Html.LabelFor(model => model.DataRegistrazione, htmlAttributes: new { @class = "control-label col-md-10" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DataRegistrazione, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                    @Html.ValidationMessageFor(model => model.DataRegistrazione, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group my-2">
+                @Html.LabelFor(model => model.ColoreMantello, htmlAttributes: new { @class = "control-label col-md-10" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ColoreMantello, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ColoreMantello, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group my-2">
+                @Html.LabelFor(model => model.DataNascita, htmlAttributes: new { @class = "control-label col-md-10" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DataNascita, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                    @Html.ValidationMessageFor(model => model.DataNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group my-2 ShowTooltip">
+                <p class="Tooltip" style="top: 310px"><b><i class="fa-solid fa-triangle-exclamation"></i> Lasciare 0 se microchip non presente.</b></p>
+                @Html.LabelFor(model => model.NChip, htmlAttributes: new { @class = "control-label col-md-10" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NChip, new { htmlAttributes = new { @class = "form-control", @Value = 0 } })
+                    @Html.ValidationMessageFor(model => model.NChip, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group my-2 ShowTooltip">
+                <p class="Tooltip" style="top: 360px"><b><i class="fa-solid fa-triangle-exclamation"></i> Se padrone non presente lasciare Nome vuoto.</b></p>
+                @Html.LabelFor(model => model.NomeProprietario, htmlAttributes: new { @class = "control-label col-md-10" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NomeProprietario, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NomeProprietario, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group my-2 ShowTooltip">
+                <p class="Tooltip" style="top: 420px"><b><i class="fa-solid fa-triangle-exclamation"></i> Se padrone non presente lasciare Cognome vuoto.</b></p>
+                @Html.LabelFor(model => model.CognomeProprietario, htmlAttributes: new { @class = "control-label col-md-10" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CognomeProprietario, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CognomeProprietario, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group my-2">
+                @Html.LabelFor(model => model.Tipologia.IdTipologia, htmlAttributes: new { @class = "control-label col-md-10" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Tipologia.IdTipologia, new SelectList(ViewBag.Tipologia, "Value", "Text"), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Tipologia.IdTipologia, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group my-2">
+                @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-10" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Photo, new { @class = "form-control", @type = "file", @accept = "image/*" })
+                    @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Aggiungi" class="btn ColoreBtn my-2" />
+                </div>
+            </div>
+        </div>
+            }
+        </div>
+    </div>
+</center>
